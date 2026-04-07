@@ -122,6 +122,11 @@ namespace Fusion {
     NetworkRunner _server;
 
     /// <summary>
+    /// Static reference to the current active runner for easy access from other scripts.
+    /// </summary>
+    public static NetworkRunner ActiveRunner { get; private set; }
+
+    /// <summary>
     /// The Scene that will be loaded after network shutdown completes (all peers have disconnected). 
     /// If this field is null or invalid, will be set to the current scene when <see cref="FusionBootstrap"/> runs Awake().
     /// </summary>
@@ -453,6 +458,7 @@ namespace Fusion {
         }
       }
 
+      ActiveRunner = null;
       SceneManager.LoadSceneAsync(_initialScenePath);
       // Destroy our DontDestroyOnLoad objects to finish the reset
       Destroy(RunnerPrefab.gameObject);
@@ -658,6 +664,13 @@ namespace Fusion {
       var sceneInfo = new NetworkSceneInfo();
       if (scene.IsValid) {
         sceneInfo.AddSceneRef(scene, LoadSceneMode.Single);
+      }
+
+      // Set the active runner reference
+      if (gameMode != GameMode.Client && gameMode != GameMode.AutoHostOrClient) {
+        ActiveRunner = runner;
+      } else if (ActiveRunner == null) {
+        ActiveRunner = runner;
       }
 
       return runner.StartGame(new StartGameArgs {
