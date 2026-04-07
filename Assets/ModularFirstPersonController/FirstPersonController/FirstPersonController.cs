@@ -36,8 +36,8 @@ public class FirstPersonController : MonoBehaviour
     public Color crosshairColor = Color.white;
 
     // Internal Variables
-    private float yaw = 0.0f;
-    private float pitch = 0.0f;
+    public float yaw = 0.0f;
+    public float pitch = 0.0f;
     private Image crosshairObject;
 
     #region Camera Zoom Variables
@@ -136,7 +136,10 @@ public class FirstPersonController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
 
-        crosshairObject = GetComponentInChildren<Image>(includeInactive:true); 
+        // Freeze rotation on all axes to allow manual rotation control
+        rb.constraints = RigidbodyConstraints.FreezeRotation;
+
+        crosshairObject = GetComponentInChildren<Image>(includeInactive: true);
 
         // Set internal variables
         playerCamera.fieldOfView = fov;
@@ -215,7 +218,7 @@ public class FirstPersonController : MonoBehaviour
         // Control camera movement
         if (cameraCanMove)
         {
-            yaw = transform.localEulerAngles.y + Input.GetAxis("Mouse X") * mouseSensitivity;
+            yaw = transform.eulerAngles.y + Input.GetAxis("Mouse X") * mouseSensitivity;
 
             if (!invertCamera)
             {
@@ -229,8 +232,8 @@ public class FirstPersonController : MonoBehaviour
 
             // Clamp pitch between lookAngle
             pitch = Mathf.Clamp(pitch, -maxLookAngle, maxLookAngle);
-
-            transform.localEulerAngles = new Vector3(0, yaw, 0);
+            Debug.Log(yaw);
+            rb.MoveRotation(Quaternion.Euler(0, yaw, 0));
             playerCamera.transform.localEulerAngles = new Vector3(pitch, 0, 0);
         }
 
@@ -441,7 +444,7 @@ public class FirstPersonController : MonoBehaviour
                     {
                         sprintBarCG.alpha -= 3 * Time.deltaTime;
                     }
-                    
+
                 }
 
                 targetVelocity = transform.TransformDirection(targetVelocity) * walkSpeed;
