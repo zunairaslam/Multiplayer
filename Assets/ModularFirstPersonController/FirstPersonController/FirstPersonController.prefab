@@ -14,6 +14,8 @@ GameObject:
   - component: {fileID: 4459864850019384737}
   - component: {fileID: 4459864850019384741}
   - component: {fileID: 4459864850019384740}
+  - component: {fileID: -2411078675085794387}
+  - component: {fileID: -3113851818800962555}
   m_Layer: 0
   m_Name: FirstPersonController
   m_TagString: Player
@@ -142,7 +144,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 80
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!114 &4459864850019384740
 MonoBehaviour:
@@ -202,6 +204,42 @@ MonoBehaviour:
   joint: {fileID: 4459864851508666808}
   bobSpeed: 10
   bobAmount: {x: 0, y: 0.1, z: 0}
+  _NetworkedHealth: 100
+--- !u!114 &-2411078675085794387
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4459864850019384750}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf951abeabf7a5c48a463de88795ec11, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RaycastAttack
+  Damage: 10
+  PlayerMovement: {fileID: 0}
+--- !u!114 &-3113851818800962555
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4459864850019384750}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Fusion.Runtime.dll::Fusion.NetworkObject
+  SortKey: 553383118
+  ObjectInterest: 1
+  Flags: 262145
+  NestedObjects:
+  - {fileID: 7317921831329066389}
+  NetworkedBehaviours:
+  - {fileID: 4459864850019384740}
+  - {fileID: -2411078675085794387}
+  ForceRemoteRenderTimeframe: 0
 --- !u!1 &4459864850190357393
 GameObject:
   m_ObjectHideFlags: 0
@@ -571,11 +609,12 @@ MonoBehaviour:
   m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Fusion.Runtime.dll::Fusion.NetworkObject
-  SortKey: 0
+  SortKey: 2641818738
   ObjectInterest: 1
-  Flags: 262144
+  Flags: 262145
   NestedObjects: []
-  NetworkedBehaviours: []
+  NetworkedBehaviours:
+  - {fileID: 2425997028746964999}
   ForceRemoteRenderTimeframe: 0
 --- !u!1 &4459864851397454630
 GameObject:

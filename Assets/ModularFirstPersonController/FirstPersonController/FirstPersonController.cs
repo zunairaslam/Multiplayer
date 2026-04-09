@@ -9,15 +9,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Fusion;
+using System;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
 using System.Net;
 #endif
 
-public class FirstPersonController : MonoBehaviour
+public class FirstPersonController : NetworkBehaviour
 {
     private Rigidbody rb;
+
+    
 
     #region Camera Movement Variables
 
@@ -126,12 +130,34 @@ public class FirstPersonController : MonoBehaviour
     public float bobSpeed = 10f;
     public Vector3 bobAmount = new Vector3(.15f, .05f, 0f);
 
+    [Networked, OnChangedRender(nameof(OnNetworkHealthChanged))]
+    public float NetworkedHealth { get; set; } = 100;
+
+    private void OnNetworkHealthChanged()
+    {
+        Debug.Log("NetworkedHealth changed to: " + NetworkedHealth);
+    }
+
+    [ContextMenu(nameof(Test))]
+    public void Test(float damage)
+    {
+        if(HasStateAuthority)
+            NetworkedHealth -= damage;
+    }
+
     // Internal Variables
     private Vector3 jointOriginalPos;
     private float timer = 0;
 
     #endregion
 
+    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+    public void DealDamageRpc(float damage)
+    {
+        // The code inside here will run on the client which owns this object (has state and input authority).
+        Debug.Log("Received DealDamageRpc on StateAuthority, modifying Networked variable");
+        NetworkedHealth -= damage;
+    }
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -232,7 +258,7 @@ public class FirstPersonController : MonoBehaviour
 
             // Clamp pitch between lookAngle
             pitch = Mathf.Clamp(pitch, -maxLookAngle, maxLookAngle);
-            Debug.Log(yaw);
+            //Debug.Log(yaw);
             rb.MoveRotation(Quaternion.Euler(0, yaw, 0));
             playerCamera.transform.localEulerAngles = new Vector3(pitch, 0, 0);
         }
@@ -480,7 +506,6 @@ public class FirstPersonController : MonoBehaviour
             isGrounded = false;
         }
     }
-
     private void Jump()
     {
         // Adds force to the player rigidbody to jump
