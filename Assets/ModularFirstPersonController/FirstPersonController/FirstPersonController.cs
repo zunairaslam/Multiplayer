@@ -21,7 +21,7 @@ public class FirstPersonController : NetworkBehaviour
 {
     private Rigidbody rb;
 
-    
+
 
     #region Camera Movement Variables
 
@@ -32,6 +32,8 @@ public class FirstPersonController : NetworkBehaviour
     public bool cameraCanMove = true;
     public float mouseSensitivity = 2f;
     public float maxLookAngle = 50f;
+
+
 
     // Crosshair
     public bool lockCursor = true;
@@ -81,6 +83,7 @@ public class FirstPersonController : NetworkBehaviour
     // Sprint Bar
     public bool useSprintBar = true;
     public bool hideBarWhenFull = true;
+    public Slider healthBar;
     public Image sprintBarBG;
     public Image sprintBar;
     public float sprintBarWidthPercent = .3f;
@@ -133,15 +136,26 @@ public class FirstPersonController : NetworkBehaviour
     [Networked, OnChangedRender(nameof(OnNetworkHealthChanged))]
     public float NetworkedHealth { get; set; } = 100;
 
+    public float maxHealth = 100f;
+
     private void OnNetworkHealthChanged()
     {
         Debug.Log("NetworkedHealth changed to: " + NetworkedHealth);
+        UpdateHealthBar();
+    }
+
+    private void UpdateHealthBar()
+    {
+        if (healthBar != null)
+        {
+            healthBar.value = NetworkedHealth / maxHealth;
+        }
     }
 
     [ContextMenu(nameof(Test))]
     public void Test(float damage)
     {
-        if(HasStateAuthority)
+        if (HasStateAuthority)
             NetworkedHealth -= damage;
     }
 
@@ -194,6 +208,14 @@ public class FirstPersonController : NetworkBehaviour
         else
         {
             crosshairObject.gameObject.SetActive(false);
+        }
+
+        // Initialize health bar
+        if (healthBar != null)
+        {
+            healthBar.minValue = 0f;
+            healthBar.maxValue = 1f;
+            UpdateHealthBar();
         }
 
         #region Sprint Bar
@@ -707,6 +729,11 @@ public class FirstPersonControllerEditor : Editor
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.PrefixLabel(new GUIContent("Bar", "Object to be used as sprint bar foreground."));
             fpc.sprintBar = (Image)EditorGUILayout.ObjectField(fpc.sprintBar, typeof(Image), true);
+            EditorGUILayout.EndHorizontal();
+
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.PrefixLabel(new GUIContent("Health Bar", "Object to be used as health bar."));
+            fpc.healthBar = (Slider)EditorGUILayout.ObjectField(fpc.healthBar, typeof(Slider), true);
             EditorGUILayout.EndHorizontal();
 
 
