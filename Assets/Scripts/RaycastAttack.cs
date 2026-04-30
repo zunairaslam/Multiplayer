@@ -24,6 +24,7 @@ public class RaycastAttack : NetworkBehaviour
                 if (hit.transform.TryGetComponent<FirstPersonController>(out var firstPersonController))
                 {
                     firstPersonController.DealDamageRpc(Damage);
+                    
                 }
             }
 

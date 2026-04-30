@@ -509,6 +509,8 @@ GameObject:
   m_Component:
   - component: {fileID: 3670202535596700951}
   - component: {fileID: 2346062474542699353}
+  - component: {fileID: 5180741896924154997}
+  - component: {fileID: 5819052005279141799}
   m_Layer: 0
   m_Name: Slider
   m_TagString: Untagged
@@ -588,6 +590,40 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &5180741896924154997
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5033555077632688307}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Fusion.Runtime.dll::Fusion.NetworkObject
+  SortKey: 3461912983
+  ObjectInterest: 1
+  Flags: 262145
+  NestedObjects: []
+  NetworkedBehaviours:
+  - {fileID: 5819052005279141799}
+  ForceRemoteRenderTimeframe: 0
+--- !u!114 &5819052005279141799
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5033555077632688307}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2a574b8505984a41ba714ce16fc11ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HealthBar
+  healthSlider: {fileID: 2346062474542699353}
+  maxHealth: 100
+  _CurrentHealth: 0
 --- !u!1 &5440548248606470131
 GameObject:
   m_ObjectHideFlags: 0
@@ -778,6 +814,7 @@ GameObject:
   - component: {fileID: 1420441057470342572}
   - component: {fileID: 8971695498756788156}
   - component: {fileID: 2199158130095091481}
+  - component: {fileID: -2406180390259724784}
   m_Layer: 0
   m_Name: FirstPersonController
   m_TagString: Player
@@ -824,11 +861,13 @@ MonoBehaviour:
   SortKey: 3562733367
   ObjectInterest: 1
   Flags: 262145
-  NestedObjects: []
+  NestedObjects:
+  - {fileID: 5180741896924154997}
   NetworkedBehaviours:
   - {fileID: 2105562675948846911}
   - {fileID: 8971695498756788156}
   - {fileID: 2199158130095091481}
+  - {fileID: -2406180390259724784}
   - {fileID: 3472562303878511843}
   ForceRemoteRenderTimeframe: 0
 --- !u!114 &2105562675948846911
@@ -1022,6 +1061,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RaycastAttack
   Damage: 10
   PlayerMovement: {fileID: 8971695498756788156}
+--- !u!114 &-2406180390259724784
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6289505669030779912}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4749aa1e6936975429152a9c261a6cc4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TestSync
 --- !u!1 &7047484649967957199
 GameObject:
   m_ObjectHideFlags: 0

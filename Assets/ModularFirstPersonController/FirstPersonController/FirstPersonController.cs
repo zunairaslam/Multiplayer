@@ -171,6 +171,7 @@ public class FirstPersonController : NetworkBehaviour
         // The code inside here will run on the client which owns this object (has state and input authority).
         Debug.Log("Received DealDamageRpc on StateAuthority, modifying Networked variable");
         NetworkedHealth -= damage;
+        healthBar.GetComponent<HealthBar>().TakeDamage(damage);
     }
     private void Awake()
     {
@@ -214,7 +215,7 @@ public class FirstPersonController : NetworkBehaviour
         if (healthBar != null)
         {
             healthBar.minValue = 0f;
-            healthBar.maxValue = 1f;
+            healthBar.maxValue = 100f;
             UpdateHealthBar();
         }
 
@@ -421,6 +422,8 @@ public class FirstPersonController : NetworkBehaviour
         {
             HeadBob();
         }
+
+        healthBar.value = NetworkedHealth / maxHealth;
     }
 
     void FixedUpdate()
@@ -440,7 +443,8 @@ public class FirstPersonController : NetworkBehaviour
             Vector3 targetVelocity = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
 
             // Checks if player is walking and isGrounded
-            // Will allow head bob
+            // Will al
+
             if (targetVelocity.x != 0 || targetVelocity.z != 0 && isGrounded)
             {
                 isWalking = true;
